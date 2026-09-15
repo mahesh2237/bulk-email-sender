@@ -1,0 +1,39 @@
+{
+  "name": "bulk-email-sender",
+  "displayName": "Bulk Individual Email Sender for Gmail",
+  "version": "1.0.0",
+  "description": "Send personalized individual emails to multiple recipients via Gmail web automation",
+  "author": "Mahesh",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
+  },
+  "dependencies": {
+    "@plasmohq/storage": "^1.15.0",
+    "lucide-react": "^1.46.0",
+    "plasmo": "^0.90.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.2.9",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://mail.google.com/*"
+    ],
+    "permissions": [
+      "storage",
+      "sidePanel",
+      "tabs",
+      "scripting"
+    ],
+    "side_panel": {
+      "default_path": "sidepanel.html"
+    }
+  }
+}
