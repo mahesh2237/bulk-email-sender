@@ -341,42 +341,58 @@ export default function SidePanel() {
       {/* Header */}
       <header className="header">
         <div className="logo-group">
-          <div className="logo-icon">✉</div>
+          <div className="logo-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+          </div>
           <div>
             <div className="title">Mail Merge for Gmail</div>
-            <div className="subtitle">Individual bulk email automation</div>
+            <div className="subtitle">
+              <span>Bulk individual sender</span>
+              <span className="workspace-tag">WORKSPACE</span>
+            </div>
           </div>
         </div>
-        <button
-          className="btn btn-secondary btn-sm"
-          onClick={openFullDashboard}
-          title="Open in full browser tab"
-        >
-          Full Tab ↗
-        </button>
+        <div className="header-actions">
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={openFullDashboard}
+            title="Open full dashboard tab"
+          >
+            Dashboard ↗
+          </button>
+        </div>
       </header>
 
       {/* Nav Tabs */}
-      <nav className="tabs">
-        <button
-          className={`tab-btn ${activeTab === "recipients" ? "active" : ""}`}
-          onClick={() => setActiveTab("recipients")}
-        >
-          1. Recipients ({state.recipients.length})
-        </button>
-        <button
-          className={`tab-btn ${activeTab === "compose" ? "active" : ""}`}
-          onClick={() => setActiveTab("compose")}
-        >
-          2. Compose & Preview
-        </button>
-        <button
-          className={`tab-btn ${activeTab === "queue" ? "active" : ""}`}
-          onClick={() => setActiveTab("queue")}
-        >
-          3. Queue & Send
-        </button>
-      </nav>
+      <div className="tabs-container">
+        <nav className="tabs">
+          <button
+            className={`tab-btn ${activeTab === "recipients" ? "active" : ""}`}
+            onClick={() => setActiveTab("recipients")}
+          >
+            <span>Recipients</span>
+            <span className="tab-badge">{state.recipients.length}</span>
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "compose" ? "active" : ""}`}
+            onClick={() => setActiveTab("compose")}
+          >
+            <span>Compose</span>
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "queue" ? "active" : ""}`}
+            onClick={() => setActiveTab("queue")}
+          >
+            <span>Queue</span>
+            {state.stats.pending > 0 && (
+              <span className="tab-badge">{state.stats.pending}</span>
+            )}
+          </button>
+        </nav>
+      </div>
 
       {/* Main Body */}
       <main className="content">
@@ -426,29 +442,27 @@ export default function SidePanel() {
               </div>
 
               {/* Mode Switcher: File Upload vs Paste */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "4px",
-                  background: "#f1f5f9",
-                  padding: "3px",
-                  borderRadius: "8px",
-                  marginBottom: "12px"
-                }}
-              >
+              <div className="pill-selector">
                 <button
-                  className={`btn btn-sm ${importMode === "file" ? "btn-primary" : "btn-secondary"}`}
-                  style={{ flex: 1, border: "none" }}
+                  className={`pill-option ${importMode === "file" ? "active" : ""}`}
                   onClick={() => setImportMode("file")}
                 >
-                  📁 Upload CSV File
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                    <path d="M12 12v9" />
+                    <path d="m16 16-4-4-4 4" />
+                  </svg>
+                  <span>Upload CSV File</span>
                 </button>
                 <button
-                  className={`btn btn-sm ${importMode === "paste" ? "btn-primary" : "btn-secondary"}`}
-                  style={{ flex: 1, border: "none" }}
+                  className={`pill-option ${importMode === "paste" ? "active" : ""}`}
                   onClick={() => setImportMode("paste")}
                 >
-                  📋 Paste Emails / Text
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  </svg>
+                  <span>Paste Emails / Text</span>
                 </button>
               </div>
 
@@ -480,10 +494,16 @@ export default function SidePanel() {
                       }
                     }}
                   />
-                  <div style={{ fontSize: "24px", marginBottom: "4px" }}>📂</div>
-                  <div style={{ fontWeight: 600 }}>Click to browse or drop CSV file here</div>
-                  <div style={{ color: "var(--text-muted)", fontSize: "11px", marginTop: "4px" }}>
-                    Supports CSV with Name, Email, and custom attributes
+                  <div className="dropzone-icon-circle">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                  </div>
+                  <div className="dropzone-title">Click to browse or drop CSV file here</div>
+                  <div className="dropzone-desc">
+                    Supports CSV with Name, Email, and custom variables
                   </div>
                 </div>
               ) : (
@@ -687,7 +707,7 @@ export default function SidePanel() {
               {/* Variable Chips */}
               {state.columns.length > 0 && (
                 <div style={{ marginBottom: "12px" }}>
-                  <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--text-muted)" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 500, color: "var(--md-text-secondary)", marginBottom: "4px" }}>
                     Click token to insert into template:
                   </div>
                   <div className="chips-row">
@@ -698,7 +718,8 @@ export default function SidePanel() {
                         onClick={() => insertToken(col, "body")}
                         title={`Insert {{${col}}} into body`}
                       >
-                        + {`{{${col}}}`}
+                        <span className="chip-add-icon">+</span>
+                        <span>{`{{${col}}}`}</span>
                       </button>
                     ))}
                   </div>
@@ -709,7 +730,7 @@ export default function SidePanel() {
               <div className="form-group">
                 <label className="form-label">
                   <span>Subject Line</span>
-                  <span style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                  <span style={{ fontSize: "10px", color: "var(--md-text-secondary)" }}>
                     Supports {`{{variables}}`}
                   </span>
                 </label>
@@ -728,7 +749,7 @@ export default function SidePanel() {
               <div className="form-group">
                 <label className="form-label">
                   <span>Email Message Body</span>
-                  <span style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                  <span style={{ fontSize: "10px", color: "var(--md-text-secondary)" }}>
                     Supports fallback: {`{{Name|Friend}}`}
                   </span>
                 </label>
@@ -746,9 +767,15 @@ export default function SidePanel() {
 
             {/* Live Recipient Preview Card */}
             {state.recipients.length > 0 && (
-              <div className="card" style={{ borderLeft: "3px solid var(--primary)" }}>
-                <div className="card-title">
-                  <span>Live Render Preview</span>
+              <div className="preview-card">
+                <div className="card-title" style={{ marginBottom: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--md-primary)" strokeWidth="2">
+                      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <span>Recipient Preview</span>
+                  </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     <button
                       className="btn btn-secondary btn-sm"
@@ -757,8 +784,8 @@ export default function SidePanel() {
                     >
                       ‹
                     </button>
-                    <span style={{ fontSize: "11px", fontWeight: 600 }}>
-                      {previewIndex + 1} / {state.recipients.length}
+                    <span style={{ fontSize: "11px", fontWeight: 600, color: "var(--md-text-secondary)" }}>
+                      {previewIndex + 1} of {state.recipients.length}
                     </span>
                     <button
                       className="btn btn-secondary btn-sm"
@@ -770,32 +797,27 @@ export default function SidePanel() {
                   </div>
                 </div>
 
-                <div style={{ fontSize: "11px", marginBottom: "6px" }}>
-                  <strong>To:</strong> {currentPreviewRecipient?.email}
+                <div className="preview-header">
+                  <div className="preview-avatar">
+                    {(currentPreviewRecipient?.email?.[0] || "U").toUpperCase()}
+                  </div>
+                  <div className="preview-recipient-info">
+                    <div className="preview-email">{currentPreviewRecipient?.email}</div>
+                    <div className="preview-subject">
+                      <strong>Subject:</strong> {evaluatedSubject || "—"}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: "11px", marginBottom: "8px" }}>
-                  <strong>Subject:</strong> {evaluatedSubject || "—"}
-                </div>
-                <div
-                  style={{
-                    backgroundColor: "#f8fafc",
-                    padding: "10px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--border)",
-                    whiteSpace: "pre-wrap",
-                    fontSize: "12px",
-                    maxHeight: "150px",
-                    overflowY: "auto"
-                  }}
-                >
+
+                <div className="preview-body">
                   {evaluatedBody || "—"}
                 </div>
               </div>
             )}
 
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
               <button className="btn btn-secondary" onClick={() => setActiveTab("recipients")}>
-                ← Back to Recipients
+                ← Back
               </button>
               <button className="btn btn-primary" onClick={() => setActiveTab("queue")}>
                 Next: Queue & Send →
@@ -860,33 +882,48 @@ export default function SidePanel() {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "12px" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "14px" }}>
                 {state.status !== "running" ? (
                   <button
-                    className="btn btn-primary"
-                    style={{ flex: 1 }}
+                    className="btn btn-compose"
+                    style={{ flex: 1, display: "flex", justifyContent: "center" }}
                     onClick={startCampaign}
                     disabled={state.recipients.length === 0}
                   >
-                    {state.stats.pending > 0
-                      ? `▶ Start Bulk Send (${state.stats.pending})`
-                      : `▶ Restart Bulk Send (${state.recipients.length})`}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="m8 5 11 7-11 7V5z" />
+                    </svg>
+                    <span>
+                      {state.stats.pending > 0
+                        ? `Start Bulk Send (${state.stats.pending})`
+                        : `Restart Bulk Send (${state.recipients.length})`}
+                    </span>
                   </button>
                 ) : (
                   <button className="btn btn-warning" style={{ flex: 1 }} onClick={pauseCampaign}>
-                    ⏸ Pause Send
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="6" y="4" width="4" height="16" />
+                      <rect x="14" y="4" width="4" height="16" />
+                    </svg>
+                    <span>Pause Send</span>
                   </button>
                 )}
 
                 {state.status === "running" && (
                   <button className="btn btn-danger" onClick={stopCampaign}>
-                    ⏹ Stop
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="5" y="5" width="14" height="14" rx="2" />
+                    </svg>
+                    <span>Stop</span>
                   </button>
                 )}
 
                 {state.stats.failed > 0 && state.status !== "running" && (
                   <button className="btn btn-secondary" onClick={retryFailed}>
-                    🔄 Retry Failed ({state.stats.failed})
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                    </svg>
+                    <span>Retry Failed ({state.stats.failed})</span>
                   </button>
                 )}
               </div>

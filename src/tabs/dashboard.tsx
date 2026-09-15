@@ -136,51 +136,73 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "24px" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "28px 24px" }}>
       {/* Header */}
       <header
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "24px",
-          borderBottom: "1px solid var(--border)",
-          paddingBottom: "16px"
+          marginBottom: "28px",
+          borderBottom: "1px solid var(--md-border-subtle)",
+          paddingBottom: "18px"
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div className="logo-icon" style={{ width: "36px", height: "36px", fontSize: "18px" }}>
-            ✉
+        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+          <div className="logo-icon" style={{ width: "42px", height: "42px", borderRadius: "12px" }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
           </div>
           <div>
-            <h1 style={{ fontSize: "20px", fontWeight: 700 }}>Bulk Email Campaign Dashboard</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "13px" }}>
-              Send individual personalized emails via active Gmail web automation
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <h1 style={{ fontSize: "20px", fontWeight: 700, color: "var(--md-text-primary)" }}>Mail Merge Campaign Dashboard</h1>
+              <span className="workspace-tag">WORKSPACE</span>
+            </div>
+            <p style={{ color: "var(--md-text-secondary)", fontSize: "13px", marginTop: "2px" }}>
+              Automated individual emails sent directly through your authenticated Gmail session
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <button
             className="btn btn-secondary"
             onClick={() => setShowPasteBox(!showPasteBox)}
           >
-            {showPasteBox ? "✕ Close Paste Box" : "📋 + Paste Contacts"}
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            </svg>
+            <span>{showPasteBox ? "Close Paste" : "+ Paste Contacts"}</span>
           </button>
           <button className="btn btn-secondary" onClick={exportToCSV}>
-            📥 Export Report (CSV)
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Export CSV</span>
           </button>
           {state.status === "running" ? (
             <button className="btn btn-warning" onClick={pauseCampaign}>
-              ⏸ Pause Campaign
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+              <span>Pause Campaign</span>
             </button>
           ) : (
             <button
-              className="btn btn-primary"
+              className="btn btn-compose"
               disabled={state.stats.pending === 0}
               onClick={startCampaign}
             >
-              ▶ Start Campaign
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="m8 5 11 7-11 7V5z" />
+              </svg>
+              <span>Start Campaign ({state.stats.pending})</span>
             </button>
           )}
         </div>
